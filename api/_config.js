@@ -1,19 +1,19 @@
 const LLM_KEY = process.env.OLLAMA_API_KEY;
-const LLM_URL = 'https://openrouter.ai/api/v1/chat/completions';
+const LLM_BASE = process.env.LLM_BASE_URL || 'https://ollama.com/api';
 
 async function llm(systemPrompt, userContent, options = {}) {
   if (!LLM_KEY) throw new Error('OLLAMA_API_KEY not configured');
+  const url = LLM_BASE + '/chat';
   const body = JSON.stringify({
-    model: options.model || 'google/gemini-2.5-flash',
+    model: options.model || 'deepseek-v4-flash',
     messages: [
       { role: 'system', content: systemPrompt },
       { role: 'user', content: userContent }
     ],
     stream: false,
-    max_tokens: options.maxTokens || 3000,
-    temperature: options.temperature || 0.2
+    options: { num_predict: options.maxTokens || 3000, temperature: options.temperature || 0.2 }
   });
-  const res = await fetch(LLM_URL, {
+  const res = await fetch(url, {
     method: 'POST',
     headers: { Authorization: 'Bearer ' + LLM_KEY, 'Content-Type': 'application/json' },
     body
@@ -23,7 +23,7 @@ async function llm(systemPrompt, userContent, options = {}) {
   let json;
   try { json = JSON.parse(text); }
   catch (_) { throw new Error('LLM returned non-JSON: ' + text.substring(0, 100)); }
-  return (json.choices?.[0]?.message?.content || '').replace(/^```(?:json)?\s*\n?/i, '').replace(/\n?```\s*$/i, '').trim();
+  return (json.message?.content || '').replace(/^```(?:json)?\s*\n?/i, '').replace(/\n?```\s*$/i, '').trim();
 }
 
 function parseJSON(text) {
