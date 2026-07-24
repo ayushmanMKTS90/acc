@@ -1,0 +1,11 @@
+{
+  "functions": {
+    "api/brief-html.js": { "maxDuration": 120 }
+  },
+  "rewrites": [
+    { "source": "/report", "destination": "/api/report" },
+    { "source": "/v1", "destination": "/v1/" },
+    { "source": "/v1/", "destination": "/index.html" },
+    { "source": "/v1/(.*)", "destination": "/$1" }
+  ]
+}

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Account Intel — Pre-Meeting Brief Engine</title>
+<style>
+:root{
+  --bg-default:#ffffff; --bg-muted:#fafafa; --bg-inset:#f5f5f5; --bg-accent:#fff8e6;
+  --bg-success:#f0fdf4; --bg-attention:#fefce8; --bg-danger:#fef2f2;
+  --bg-subtle:#f5f5f5;
+  --fg-default:#0a0a0a; --fg-muted:#737373; --fg-accent:#d97706; --fg-success:#16a34a; --fg-danger:#dc2626;
+  --border-default:#e5e5e5; --border-muted:#f0f0f0;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:24px; --radius-full:9999px;
+  --shadow-sm:0 1px 2px 0 rgba(0,0,0,0.04),0 1px 3px 0 rgba(0,0,0,0.02);
+  --shadow-md:0 4px 20px rgba(0,0,0,0.08);
+  --shadow-lg:0 8px 40px rgba(0,0,0,0.12);
+  --font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif;
+  --c1:#3b82f6; --c2:#22c55e; --c3:#a855f7; --c4:#f59e0b; --c5:#f59e0b; --c6:#14b8a6; --c7:#9ca3af;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);background:var(--bg-default);color:var(--fg-default);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.header{display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 28px;border-bottom:1px solid var(--border-default);background:var(--bg-default);position:sticky;top:0;z-index:100}
+.header-logo{font-size:16px;font-weight:700;color:var(--fg-default);text-decoration:none;letter-spacing:-.3px}
+.header-logo:hover{color:var(--fg-accent)}
+.btn{height:34px;padding:0 14px;font-size:14px;font-weight:500;border-radius:var(--radius-sm);border:1px solid var(--border-default);background:transparent;color:var(--fg-default);cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;transition:all .15s;font-family:inherit;text-decoration:none}
+.btn:hover{border-color:#d4d4d4;color:var(--fg-accent)}
+.btn-primary{background:#f5a623;color:#0a0a0a;border-color:#f5a623;font-weight:600}
+.btn-primary:hover{background:#e39515;border-color:#e39515;box-shadow:0 2px 8px rgba(245,166,35,0.25)}
+.btn-primary:disabled{background:#fde9c4;color:#a0a0a0;border-color:#fde9c4;cursor:not-allowed}
+.page{max-width:1040px;margin:0 auto;padding:40px 28px}
+.subhead{font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.3px;color:var(--fg-default)}
+.subhead-desc{font-size:14px;color:var(--fg-muted);margin-bottom:36px;max-width:580px;line-height:1.6}
+.layers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:44px}
+.layer-card{padding:20px;border:1px solid var(--border-default);border-radius:var(--radius-lg);cursor:default;transition:all .2s;position:relative;overflow:hidden;background:var(--bg-default);box-shadow:var(--shadow-sm)}
+.layer-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--bar);opacity:0.9}
+.layer-card:hover{border-color:#d4d4d4;transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.layer-card-top{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.layer-num{font-size:11px;font-weight:700;color:#fff;padding:0 8px;height:20px;border-radius:var(--radius-full);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;letter-spacing:.3px}
+.layer-title{font-size:14px;font-weight:600;color:var(--fg-default)}
+.layer-desc{font-size:12px;color:var(--fg-muted);line-height:1.6}
+.section-block{margin-bottom:36px}
+.section-block.hidden{display:none}
+.section-hdr{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.section-hdr h2{font-size:15px;font-weight:600}
+.section-count{font-size:13px;color:var(--fg-muted)}
+.items-grid{display:flex;flex-wrap:wrap;gap:8px}
+.item-card{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--border-muted);border-radius:var(--radius-md);cursor:pointer;transition:all .15s;background:var(--bg-default);box-shadow:var(--shadow-sm)}
+.item-card:hover{border-color:#d4d4d4;box-shadow:var(--shadow-md);transform:translateY(-1px)}
+.item-icon{width:22px;height:22px;border-radius:var(--radius-sm);background:var(--bg-inset);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--fg-muted)}
+.item-info{min-width:0}
+.item-title{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--fg-default)}
+.item-del{background:none;border:none;cursor:pointer;color:var(--fg-muted);padding:3px;border-radius:var(--radius-sm);line-height:0;flex-shrink:0;transition:all .15s}
+.item-del:hover{color:var(--fg-danger);background:var(--bg-danger)}
+.items-empty{padding:20px;text-align:center;font-size:13px;color:var(--fg-muted);border:1px dashed var(--border-default);border-radius:var(--radius-md);background:var(--bg-muted)}
+.footer-pg{text-align:center;font-size:12px;color:var(--fg-muted);padding:28px 0;border-top:1px solid var(--border-default);margin-top:40px}
+.modal-overlay{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .2s;backdrop-filter:blur(4px)}
+.modal-overlay.active{opacity:1;pointer-events:all}
+.modal-card{background:var(--bg-default);border:1px solid var(--border-default);border-radius:var(--radius-xl);width:100%;max-width:560px;max-height:calc(100vh - 48px);overflow-y:auto;position:relative;box-shadow:var(--shadow-lg)}
+.modal-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:var(--radius-sm);border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--fg-muted);transition:all .15s;line-height:1;z-index:1}
+.modal-close:hover{color:var(--fg-accent)}
+body.modal-open{overflow:hidden}
+.form-body{padding:28px}
+.form-hdr{margin-bottom:24px}
+.form-hdr h2{font-size:18px;font-weight:700;letter-spacing:-.3px;color:var(--fg-default)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group.full{grid-column:1/-1}
+.form-group label{font-size:13px;font-weight:500;color:var(--fg-muted)}
+.form-group input,.form-group select,.form-group textarea{padding:7px 12px;border:1px solid var(--border-muted);border-radius:var(--radius-sm);font:inherit;font-size:14px;background:var(--bg-inset);color:var(--fg-default);height:36px;transition:border-color .15s,box-shadow .15s}
+.form-group textarea{resize:vertical;min-height:80px;height:auto;padding:7px 12px}
+.form-group select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 16 16' fill='%23a0a0a0'%3E%3Cpath d='M4.427 6.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 6H4.604a.25.25 0 00-.177.427z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:30px;appearance:none}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--fg-accent);box-shadow:0 0 0 3px rgba(217,119,6,0.15)}
+.form-group .hint{font-size:11px;color:var(--fg-muted)}
+.required{color:var(--fg-danger)}
+.form-actions{display:flex;align-items:center;gap:12px;margin-top:24px;padding-top:20px;border-top:1px solid var(--border-default)}
+.spinner{display:none;width:14px;height:14px;border:2px solid rgba(0,0,0,.1);border-top-color:var(--fg-accent);border-radius:50%;animation:spin .5s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.btn.loading .spinner{display:block}
+.btn.loading .btn-text{display:none}
+.error{color:var(--fg-danger);background:var(--bg-danger);border:1px solid var(--fg-danger);border-radius:var(--radius-sm);padding:8px 12px;margin-top:12px;display:none;font-size:13px}
+@media(max-width:768px){.layers{grid-template-columns:repeat(2,1fr)}.header{padding:0 16px}.page{padding:24px 16px}}
+@media(max-width:544px){.layers{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="header">
+  <a href="/" class="header-logo">Account Intel</a>
+  <button class="btn btn-primary" onclick="openFormModal()">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M7.75 2a.75.75 0 01.75.75V7h4.25a.75.75 0 110 1.5H8.5v4.25a.75.75 0 11-1.5 0V8.5H2.75a.75.75 0 010-1.5H7V2.75A.75.75 0 017.75 2z"/></svg>
+    New Brief
+  </button>
+</header>
+<div class="page">
+  <div class="subhead">Pre-meeting briefs</div>
+  <div class="subhead-desc">Generate structured 7-layer briefs for B2B sales conversations — account signals, industry context, prospect intel, tech stack, positioning, call flow, and discovery.</div>
+  <div class="layers">
+    <div class="layer-card" style="--bar:var(--c1)"><div class="layer-card-top"><span class="layer-num" style="background:var(--c1)">01</span><span class="layer-title">Why this account?</span></div><div class="layer-desc">Buying triggers, urgency signals, and validation questions that tell you why now matters.</div></div>
+    <div class="layer-card" style="--bar:var(--c2)"><div class="layer-card-top"><span class="layer-num" style="background:var(--c2)">02</span><span class="layer-title">Industry context</span></div><div class="layer-desc">Trends, talking points, recent news, and vertical shifts for their industry.</div></div>
+    <div class="layer-card" style="--bar:var(--c3)"><div class="layer-card-top"><span class="layer-num" style="background:var(--c3)">03</span><span class="layer-title">Who you&#8217;re meeting</span></div><div class="layer-desc">Priorities, concerns, influence level, and success metrics for your prospect.</div></div>
+    <div class="layer-card" style="--bar:var(--c4)"><div class="layer-card-top"><span class="layer-num" style="background:var(--c4)">04</span><span class="layer-title">Their tech setup</span></div><div class="layer-desc">Email, cloud, devices, and technologies from their public domain.</div></div>
+    <div class="layer-card" style="--bar:var(--c5)"><div class="layer-card-top"><span class="layer-num" style="background:var(--c5)">05</span><span class="layer-title">How to position us</span></div><div class="layer-desc">Competitive framing, incumbent strengths, proof points, and objection responses.</div></div>
+    <div class="layer-card" style="--bar:var(--c6)"><div class="layer-card-top"><span class="layer-num" style="background:var(--c6)">06</span><span class="layer-title">Conversation path</span></div><div class="layer-desc">Best and backup angles, entry trigger, value framing, and call sequence.</div></div>
+    <div class="layer-card" style="--bar:var(--c7)"><div class="layer-card-top"><span class="layer-num" style="background:var(--c7)">07</span><span class="layer-title">Discovery guide</span></div><div class="layer-desc">Validation questions, buying signals, pivot paths, and phrases to avoid.</div></div>
+  </div>
+  <section class="section-block hidden" id="briefs-section">
+    <header class="section-hdr"><h2>Saved Briefs</h2><span class="section-count" id="briefs-count"></span></header>
+    <div class="items-grid" id="briefs-grid"></div>
+  </section>
+  <section class="section-block hidden" id="profiles-section">
+    <header class="section-hdr"><h2>ICP Profiles</h2><span class="section-count" id="profiles-count"></span></header>
+    <div class="items-grid" id="profiles-grid"></div>
+  </section>
+  <div class="footer-pg">Account Intel &mdash; 7-layer intelligence engine</div>
+</div>
+<div class="modal-overlay" id="formModal">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeFormModal()">&times;</button>
+    <div class="form-body">
+      <div class="form-hdr"><h2>New Brief</h2></div>
+      <div class="form-row" style="margin-bottom:12px">
+        <div class="form-group full">
+          <label for="salesPlay">Sales Play</label>
+          <select id="salesPlay">
+            <option value="">Select a Sales Play</option>
+            <option value="secure-enterprise-browsing">Secure Enterprise Browsing</option>
+            <option value="modernization-dividend">"Modernization" Dividend</option>
+            <option value="ai-native-defense">AI-Native Defense</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label for="company">Company</label><input id="company" placeholder="e.g. Acme Corp"></div>
+        <div class="form-group"><label for="industry">Industry <span class="required">*</span></label>
+          <select id="industry">
+            <option value="">Select&hellip;</option>
+            <option value="Finance">Finance</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Technology">Technology</option>
+            <option value="Retail">Retail</option>
+            <option value="Manufacturing">Manufacturing</option>
+            <option value="Energy">Energy</option>
+            <option value="Government / Public Sector">Government / Public Sector</option>
+            <option value="Education">Education</option>
+          </select>
+        </div>
+        <div class="form-group"><label for="domain">Domain</label><input id="domain" placeholder="e.g. acme.com"></div>
+        <div class="form-group"><label for="product">Product</label>
+          <select id="product">
+            <option value="">Select a product</option>
+            <option value="Browser">Browser</option>
+            <option value="ShadowAI">ShadowAI</option>
+            <option value="Cameyo">Cameyo</option>
+            <option value="ChromeOS">ChromeOS</option>
+          </select>
+        </div>
+        <div class="form-group"><label for="role">Prospect role</label>
+          <select id="role">
+            <option value="CISO">CISO</option>
+            <option value="CIO">CIO</option>
+            <option value="CTO">CTO</option>
+            <option value="VP of Sales" selected>VP of Sales</option>
+            <option value="CFO">CFO</option>
+            <option value="VP of Engineering">VP of Engineering</option>
+            <option value="IT Director">IT Director</option>
+            <option value="SDR Team Lead">SDR Team Lead</option>
+          </select>
+        </div>
+        <div class="form-group"><label for="seniority">Seniority</label>
+          <select id="seniority">
+            <option>C-Level</option>
+            <option selected>VP/Director</option>
+            <option>Manager</option>
+            <option>IC</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row" style="margin-top:12px">
+        <div class="form-group full">
+          <label for="signals">Account signals <span style="font-weight:400;color:var(--fg-muted)">(auto-populated by industry)</span></label>
+          <textarea id="signals" rows="3">Select an industry above to populate relevant signals</textarea>
+          <span class="hint">One signal per line</span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group full">
+          <label for="painPoint">Pain point / topic</label>
+          <select id="painPoint">
+            <option value="">Select a pain point</option>
+            <option value="Manageability">Manageability</option>
+            <option value="Cost">Cost</option>
+            <option value="Security">Security</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" id="generateBtn" onclick="generateBrief()"><span class="spinner"></span><span class="btn-text">Generate</span></button>
+        <span style="font-size:12px;color:var(--fg-muted)">~60 seconds</span>
+      </div>
+      <div class="error" id="error"></div>
+    </div>
+  </div>
+</div>
+<script>
+function esc(s){return String(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+const INDUSTRY_SIGNALS={
+  Finance:['Recent funding round (Series A/B/C)','Hiring surge in sales/finance roles','Digital transformation initiative announced','Merger or acquisition activity','Cost reduction / restructuring program','New compliance or regulatory pressure','Security audit or incident','AI / automation adoption push'],
+  Healthcare:['New HIPAA or data privacy regulation','Electronic health record (EHR) migration','Telehealth expansion','M&A or hospital network consolidation','Cybersecurity incident or audit','Value-based care initiative','AI-assisted diagnosis adoption','Staffing shortage / hiring push'],
+  Technology:['Series A/B/C funding round','Expanding sales team (hiring wave)','Cloud migration or digital transformation','Product launch or new market entry','Cost optimization program','Security breach or compliance audit','AI/ML adoption initiative','M&A or acquisition target'],
+  Retail:['Omnichannel expansion','Supply chain modernization','Inventory management overhaul','New commerce platform','CDP adoption','Cost reduction / margin pressure','Seasonal hiring spike','PCI DSS compliance'],
+  Manufacturing:['Industry 4.0 / smart factory initiative','Supply chain disruption or reshoring','IoT sensor deployment','ERP modernization project','Workforce upskilling program','Compliance (EPA, OSHA)','Cost reduction / lean initiative','OT/ICS cybersecurity'],
+  Energy:['Renewable energy investment','Grid modernization project','Regulatory compliance update','Digital twin / IoT deployment','Cost optimization program','M&A activity','Workforce safety initiative','Carbon reporting / ESG'],
+  'Government / Public Sector':['Digital service modernization','Cybersecurity mandate (EO)','Cloud adoption (FedRAMP)','Budget allocation / grants','IT consolidation initiative','Workforce digital upskilling','New compliance reporting','Legacy system migration'],
+  Education:['LMS / SIS platform migration','Hybrid learning infrastructure','Cybersecurity incident','Data privacy (FERPA, COPPA)','Enrollment growth / expansion','AI in education pilot','IT modernization grant','Staff hiring']
+};
+const SALES_PLAYS={
+  'secure-enterprise-browsing':{product:'Browser',painPoint:'Manageability'},
+  'modernization-dividend':{product:'Cameyo',painPoint:'Cost'},
+  'ai-native-defense':{product:'ChromeOS',painPoint:'Security'}
+};
+function onSalesPlayChange(){
+  const play=document.getElementById('salesPlay').value;
+  const data=SALES_PLAYS[play];
+  if(data){
+    document.getElementById('product').value=data.product;
+    document.getElementById('painPoint').value=data.painPoint;
+  }
+}
+document.getElementById('salesPlay').addEventListener('change',onSalesPlayChange);
+function onIndustryChange(){
+  const v=document.getElementById('industry').value;
+  const ta=document.getElementById('signals');
+  const pp=document.getElementById('painPoint');
+  if(INDUSTRY_SIGNALS[v]){
+    ta.value=INDUSTRY_SIGNALS[v].join('\n');
+    pp.value=v==='Healthcare'||v==='Energy'||v==='Government / Public Sector'?'Security':v==='Technology'?'Manageability':'Cost';
+  }else{
+    ta.value='Select an industry above to populate relevant signals';
+    pp.value='';
+  }
+}
+document.getElementById('industry').addEventListener('change',onIndustryChange);
+function renderReport(data){
+  const LAYER_C=['#006edb','#30a147','#894ceb','#eb670f','#b88700','#179b9b','#808fa3'];
+  const LAYER_N=['Why this account?','Industry context','Who you\'re meeting','Their tech setup','How to position us','Conversation path','Discovery guide'];
+  const LAYER_Q=['What\'s driving them to change?','What trends affect their business?','What matters to this person?','What tools and platforms they use','How we compare to what they have','Which angle to take in the call','What to ask, listen for, and avoid'];
+  function renderBody(d,num){
+    if(!d) return '';
+    function LV(l,v){return '<div class="label">'+l+'</div><div class="value">'+v+'</div>';}
+    function SH(t){return '<div class="sec-hdr">'+t+'</div>';}
+    function LI(items){return '<ul class="item-list">'+items.map(i=>'<li>'+i+'</li>').join('')+'</ul>';}
+    switch(num){
+      case 1:return LV('Summary',esc(d.summary))+LV('Reason to act',esc(d.pressure))+(d.validation_questions?SH('Questions to ask on the call')+LI(d.validation_questions.map(q=>esc(q))):'')+(d.signal_confidence?'<div style="margin-top:12px"><span class="bge '+d.signal_confidence+'">Signal strength: '+d.signal_confidence.toUpperCase()+'</span></div>':'');
+      case 2:return LV('Headline',esc(d.headline))+(d.talk_tracks?SH('Talking points to use')+LI(d.talk_tracks.map(t=>esc(t))):'')+(d.recent_developments?SH('Recent news')+'<ul class="item-list">'+d.recent_developments.map(r=>'<li><strong>'+esc(r.headline)+'</strong><div style="font-size:12px;color:var(--fg-muted);margin-top:1px">'+esc(r.date)+' &middot; '+esc(r.relevance)+'</div></li>').join('')+'</ul>':'')+(d.vertical_shift?LV('Industry trend',esc(d.vertical_shift)):'');
+      case 3:return LV('Influence','<span class="bge '+(d.influence_level==='decision-maker'?'high':'medium')+'">'+(d.influence_level||'?').toUpperCase()+'</span>')+(d.concerns?SH('What worries them')+LI(d.concerns.map(c=>esc(c))):'')+(d.priorities?SH('What they care about')+LI(d.priorities.map(p=>esc(p))):'')+(d.likely_questions?SH("Questions they'll ask")+LI(d.likely_questions.map(q=>esc(q))):'')+LV('Success metric',esc(d.success_metric))+(d.tailored_message?'<div class="callout-accent">'+esc(d.tailored_message)+'</div>':'');
+      case 4:return '<div class="tech-grid">'+[{l:'Email',v:d.email_hosting||'Unknown'},{l:'Cloud',v:d.cloud_provider||'Unknown'},{l:'Devices',v:d.devices||'Unknown'},{l:'Main competitor',v:d.primary_competitor||'Unknown'}].map(s=>'<div><div class="label">'+s.l+'</div><div style="font-size:14px;font-weight:600;color:var(--fg-default)">'+esc(s.v)+'</div></div>').join('')+'</div>'+(d.detected_tech&&d.detected_tech.length?SH('Technologies detected')+'<div>'+d.detected_tech.map(t=>'<span class="pill">'+esc(t)+'</span>').join('')+'</div>':'')+(d.confidence?'<div style="margin-top:12px"><span class="bge '+d.confidence+'">Confidence: '+d.confidence.toUpperCase()+'</span></div>':'');
+      case 5:return LV('Core message',esc(d.reframe_headline))+'<div class="bc-hdr">Battle Card</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px"><div><div class="label">Their strength</div><div>'+esc(d.incumbent_strength)+'</div></div><div><div class="label">Their weakness</div><div>'+esc(d.incumbent_weakness)+'</div></div></div>'+LV('Our advantage',esc(d.our_lever))+(d.proof_points?SH('Proof points')+LI(d.proof_points.map(p=>esc(p))):'')+(d.objection_handling?SH('Objection handling')+d.objection_handling.map(o=>'<div class="obj-item"><span class="obj-say">"'+esc(o.if_they_say)+'"</span> <span class="obj-arrow">→</span> <span class="obj-resp">'+esc(o.respond_with)+'</span></div>').join(''):'')+(d.comparison_prompts?SH('Position against them')+LI(d.comparison_prompts.map(p=>esc(p))):'')+'<div style="margin-top:12px"><span class="bge medium">'+(d.positioning_style||'?').toUpperCase()+'</span>'+(d.avoid_phrases?' <span class="bge low" style="background:var(--bg-danger);color:var(--fg-danger);margin-left:6px">Avoid: '+(d.avoid_phrases||[]).join(', ')+'</span>':'')+'</div>';
+      case 6:return '<div class="paths"><div class="path-best">'+(d.lead_path?'Best path: '+esc(d.lead_path):'—')+'</div><div class="path-backup">'+(d.fallback_path?'Backup: '+esc(d.fallback_path):'—')+'</div></div>'+LV('When to bring up',esc(d.entry_trigger))+LV('Value framing',esc(d.value_to_metric))+(d.sequence?SH('Suggested call flow')+LI(d.sequence.map((s,i)=>'<b>'+(i+1)+'.</b> '+esc(s))):'');
+      case 7:return (d.validation_prompts?SH('Questions to validate')+LI(d.validation_prompts.map(p=>esc(p))):'')+(d.listen_for_cues?SH('Buying signals')+LI(d.listen_for_cues.map(c=>esc(c))):'')+(d.pivot_paths?SH('If they say, pivot to')+d.pivot_paths.map(p=>'<div class="obj-item"><span class="obj-say">"'+esc(p.if_they_say)+'"</span> <span class="obj-arrow">→</span> <span class="obj-resp">'+esc(p.then_pivot_to)+'</span></div>').join(''):'')+(d.dont_say?SH('Phrases to avoid')+d.dont_say.map(a=>'<div style="padding-left:12px;border-left:3px solid var(--fg-danger);color:var(--fg-danger);font-weight:500;margin-bottom:4px">"'+esc(a)+'"</div>').join(''):'')+(d.success_criteria?'<div class="callout-success">'+esc(d.success_criteria)+'</div>':'');
+    }
+  }
+  function renderCard(d,num,name,q,c){
+    return '<div class="section" id="section-'+num+'" style="border-left:3px solid '+c+'"><div class="section-hdr" style="color:'+c+'"><span class="section-num" style="background:'+c+';color:#fff">'+num+'</span><span class="section-title">'+name+'</span> <span class="section-q">'+q+'</span></div>'+renderBody(d,num)+'</div>';
+  }
+  let ol='<aside class="outline"><div class="outline-hdr">Outline</div><div class="outline-items">';
+  for(let i=0;i<7;i++){ol+='<a href="#section-'+(i+1)+'" class="outline-item" data-num="'+(i+1)+'"><span class="outline-dot" style="background:'+LAYER_C[i]+'"></span><span class="outline-label">Layer '+(i+1)+' &middot; '+LAYER_N[i]+'</span></a>';}
+  ol+='</div></aside>';
+  const signalStrength=(data.layer1_account_signals?.signal_confidence||'medium').toUpperCase();
+  const talkingPoints=(data.layer2_industry_pulse?.talk_tracks?.length||0)+(data.layer3_prospect_intel?.priorities?.length||0);
+  const techDetected=(data.layer4_tech_context?.detected_tech?.length||0);
+  const info='<div class="info-line"><strong>'+esc(data.company||'Account')+'</strong> &middot; Signal: '+signalStrength+' &middot; '+talkingPoints+' talking points &middot; '+techDetected+' tech detected</div>';
+  return '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Brief '+esc(data.company||'Account')+'</title><style>'+
+    ':root{--bg-default:#ffffff;--bg-muted:#f6f8fa;--bg-accent:#ddf4ff;--bg-success:#dafbe1;--bg-danger:#ffebe9;--fg-default:#1f2328;--fg-muted:#59636e;--fg-accent:#0969da;--fg-success:#1a7f37;--fg-danger:#d1242f;--border-default:#d1d9e0;--border-muted:#d1d9e0b3;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:24px;--radius-full:9999px;--shadow-sm:0 1px 2px 0 #1f23280d,0 1px 3px 0 #1f23280a;--shadow-md:0 3px 8px 0 #1f232814,0 2px 6px 0 #1f23280a;--shadow-lg:0 8px 24px 0 #1f23281a;--font-sans:-apple-system,BlinkMacSystemFont,\'Segoe UI\',\'Noto Sans\',Helvetica,Arial,sans-serif}'+
+    '*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}'+
+    'body{font-family:var(--font-sans);background:var(--bg-default);color:var(--fg-default);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}'+
+    '.toolbar{position:sticky;top:0;z-index:100;background:var(--bg-default);border-bottom:1px solid var(--border-muted);height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;box-shadow:var(--shadow-sm)}'+
+    '.toolbar-left{display:flex;align-items:center;gap:10px;min-width:0}'+
+    '.toolbar-logo{font-size:15px;font-weight:700;color:var(--fg-default);text-decoration:none;white-space:nowrap;letter-spacing:-.3px}'+
+    '.toolbar-logo:hover{color:var(--fg-accent)}'+
+    '.toolbar-sep{width:1px;height:18px;background:var(--border-muted);flex-shrink:0}'+
+    '.toolbar-title{font-size:14px;color:var(--fg-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'+
+    '.toolbar-right{display:flex;align-items:center;gap:6px}'+
+    '.btn{height:30px;padding:0 10px;border-radius:var(--radius-sm);font-size:12px;font-weight:500;border:1px solid var(--border-default);background:var(--bg-default);color:var(--fg-default);cursor:pointer;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;transition:all .15s;font-family:inherit;text-decoration:none;box-shadow:var(--shadow-sm)}'+
+    '.btn:hover{background:var(--bg-muted);border-color:#bbc4cc}'+
+    '.app{display:flex;max-width:1200px;margin:0 auto;min-height:calc(100vh - 52px)}'+
+    '.outline{width:200px;flex-shrink:0;padding:20px 12px;border-right:1px solid var(--border-muted);position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto}'+
+    '.outline-hdr{font-size:10px;font-weight:700;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;padding:0 8px}'+
+    '.outline-items{display:flex;flex-direction:column;gap:2px}'+
+    '.outline-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-sm);text-decoration:none;color:var(--fg-muted);font-size:12px;line-height:1.4;transition:all .15s}'+
+    '.outline-item:hover{background:var(--bg-muted);color:var(--fg-default)}'+
+    '.outline-item.active{background:var(--bg-accent);color:var(--fg-accent);font-weight:600}'+
+    '.outline-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}'+
+    '.outline-label{overflow:hidden;text-overflow:ellipsis}'+
+    '.content{flex:1;padding:36px 44px;max-width:800px}'+
+    '.info-line{font-size:12px;color:var(--fg-muted);margin-bottom:28px;padding-bottom:20px;line-height:1.6;position:relative}'+
+    '.info-line strong{color:var(--fg-default)}'+
+    '.info-line::after{content:"";position:absolute;bottom:0;left:10%;right:10%;height:1px;background:linear-gradient(to right,transparent,var(--border-muted),transparent)}'+
+    '.section{border-radius:var(--radius-md);padding:20px 24px;margin-bottom:16px;background:var(--bg-muted);box-shadow:var(--shadow-sm)}'+
+    '.section-hdr{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:12px;font-weight:600}'+
+    '.section-num{width:20px;height:20px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0}'+
+    '.section-title{font-size:14px;font-weight:600;color:var(--fg-default)}'+
+    '.section-q{font-size:12px;color:var(--fg-muted);font-weight:400;margin-left:4px}'+
+    '.label{font-size:10px;font-weight:600;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:2px}'+
+    '.value{font-size:14px;color:var(--fg-default);line-height:1.5;margin-bottom:12px}'+
+    '.sec-hdr{padding:12px 0 8px;font-size:9px;font-weight:600;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.04em;margin-top:4px;position:relative}'+
+    '.sec-hdr::after{content:"";position:absolute;bottom:0;left:5%;right:5%;height:1px;background:linear-gradient(to right,transparent,var(--border-muted),transparent)}'+
+    '.item-list{list-style:none;margin:0 0 6px}.item-list li{padding:2px 0;font-size:14px;color:var(--fg-default);line-height:1.5}'+
+    '.bge{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:var(--radius-full)}.bge.high{background:var(--bg-danger);color:var(--fg-danger)}.bge.medium{background:var(--bg-attention,#fff8c5);color:#9a6700}.bge.low{background:var(--bg-success);color:var(--fg-success)}'+
+    '.bc-hdr{font-size:10px;font-weight:600;color:var(--fg-default);text-transform:uppercase;letter-spacing:.04em;padding:12px 0 6px;margin-bottom:12px;position:relative}'+
+    '.bc-hdr::after{content:"";position:absolute;bottom:0;left:0;width:48px;height:2px;background:var(--fg-default)}'+
+    '.tech-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:12px}'+
+    '.pill{font-size:11px;color:var(--fg-muted);background:var(--bg-default);border:1px solid var(--border-muted);border-radius:var(--radius-full);padding:2px 10px;display:inline-block;margin:2px}'+
+    '.obj-item{padding:4px 0;border-bottom:1px dotted var(--border-muted);display:flex;flex-wrap:wrap;gap:4px}.obj-say{color:var(--fg-danger);font-size:13px;font-weight:500}.obj-arrow{color:var(--fg-muted);font-weight:600;font-size:13px}.obj-resp{color:var(--fg-default);font-size:13px}'+
+    '.paths{display:flex;gap:8px;margin-bottom:12px}.path-best{padding:6px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;background:var(--bg-default);color:var(--fg-default);border:1px solid var(--border-default);flex:1}.path-backup{padding:6px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;background:var(--bg-default);color:var(--fg-muted);border:1px solid var(--border-muted);flex:1}'+
+    '.callout-accent{border-radius:var(--radius-sm);padding:12px 14px;font-size:13px;line-height:1.5;background:var(--bg-accent);margin-top:12px;border-left:3px solid var(--fg-accent)}.callout-success{border-radius:var(--radius-sm);padding:12px 14px;font-size:13px;line-height:1.5;background:var(--bg-success);margin-top:12px;border-left:3px solid var(--fg-success)}'+
+    '.footer{padding:32px 0 24px;text-align:center;font-size:11px;color:var(--fg-muted)}'+
+    '@media(max-width:768px){.outline{display:none}.content{padding:28px 24px}}'+
+    '@media(max-width:544px){.content{padding:20px 16px}.tech-grid{grid-template-columns:repeat(2,1fr)}.toolbar-title{display:none}}'+
+    '<style>'+
+    '</style></head><body>'+
+    '<header class="toolbar"><div class="toolbar-left"><a href="https://account-intel-kappa.vercel.app/" class="toolbar-logo">Account Intel</a><span class="toolbar-sep"></span><span class="toolbar-title">'+esc(data.company||'Untitled')+'</span></div><div class="toolbar-right"><button class="btn" onclick="if(window.opener)window.opener.saveIcpProfile('+JSON.stringify({company:data.company,industry:data.industry,domain:data.domain,role:data.role,seniority:data.seniority,signals:data.signals,painPoint:data.painPoint,salesPlay:data.salesPlay}).replace(/"/g,'&quot;')+')">Save as ICP</button></div></header>'+
+    '<div class="app">'+ol+'<main class="content">'+info+
+    renderCard(data.layer1_account_signals,1,LAYER_N[0],LAYER_Q[0],LAYER_C[0])+
+    renderCard(data.layer2_industry_pulse,2,LAYER_N[1],LAYER_Q[1],LAYER_C[1])+
+    renderCard(data.layer3_prospect_intel,3,LAYER_N[2],LAYER_Q[2],LAYER_C[2])+
+    renderCard(data.layer4_tech_context,4,LAYER_N[3],LAYER_Q[3],LAYER_C[3])+
+    renderCard(data.layer5_competitive_context,5,LAYER_N[4],LAYER_Q[4],LAYER_C[4])+
+    renderCard(data.layer6_product_orchestration,6,LAYER_N[5],LAYER_Q[5],LAYER_C[5])+
+    renderCard(data.layer7_discovery_support,7,LAYER_N[6],LAYER_Q[6],LAYER_C[6])+
+    '<div class="footer">account-intel</div></main></div>'+
+    '<script>(function(){var a=document.querySelectorAll(".outline-item"),b=document.querySelectorAll(".section");if(!a.length||!b.length)return;var o=new IntersectionObserver(function(e){e.forEach(function(e){if(e.isIntersecting){var t=e.target.id;a.forEach(function(a){a.classList.toggle("active",a.getAttribute("href")==="#"+t)})}})},{rootMargin:"-80px 0px -60% 0px"});b.forEach(function(e){o.observe(e)})})()<\/script>'+
+    '</body></html>';
+}
+async function loadBriefs(){
+  try{
+    const resp=await fetch('/api/manage?type=briefs');
+    if(!resp.ok) return;
+    const briefs=await resp.json();
+    const section=document.getElementById('briefs-section');
+    const grid=document.getElementById('briefs-grid');
+    const count=document.getElementById('briefs-count');
+    if(!briefs.length){section.classList.add('hidden');return;}
+    section.classList.remove('hidden');
+    count.textContent=briefs.length+' brief'+(briefs.length!==1?'s':'');
+    grid.innerHTML=briefs.map(b=>{
+      return '<div class="item-card" onclick="reopenBrief(\''+b.name.replace(/'/g,"\\'")+'\')"><div class="item-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M2 1.75C2 .784 2.784 0 3.75 0h5.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0112.25 16h-8.5A1.75 1.75 0 012 14.25V1.75zM3.75 1.5a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h8.5a.25.25 0 00.25-.25V6h-2.75A1.75 1.75 0 018 4.25V1.5H3.75zm5.75.56v2.19c0 .138.112.25.25.25h2.19L9.5 2.06z"/></svg></div><div class="item-info"><div class="item-title">'+esc(b.company||'Untitled')+'</div></div><button class="item-del" onclick="event.stopPropagation();deleteBrief(\''+b.name.replace(/'/g,"\\'")+'\')" title="Delete"><svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M6.5 1.75a.25.25 0 01.25-.25h2.5a.25.25 0 01.25.25V3h-3V1.75zm4.5 0V3h2.25a.75.75 0 010 1.5h-.75l-.478 9.421A1.75 1.75 0 0110.177 15H5.823a1.75 1.75 0 01-1.572-1.079L3.773 4.5H3a.75.75 0 010-1.5H5.25V1.75A1.75 1.75 0 017 0h2a1.75 1.75 0 011.75 1.75zM5.75 7a.75.75 0 01.75.75v4a.75.75 0 01-1.5 0v-4A.75.75 0 015.75 7zm4.5 0a.75.75 0 01.75.75v4a.75.75 0 01-1.5 0v-4A.75.75 0 0110.25 7z"/></svg></button></div>';
+    }).join('');
+  }catch(_){}
+}
+function saveBrief(data){loadBriefs()}
+async function deleteBrief(name){
+  if(!confirm('Delete this brief?')) return;
+  try{
+    await fetch('/api/manage?type=brief&name='+encodeURIComponent(name),{method:'DELETE'});
+    loadBriefs();
+  }catch(_){}
+}
+async function reopenBrief(name){
+  window.open('/report?brief='+encodeURIComponent(name),'_blank');
+}
+async function loadProfiles(){
+  try{
+    const resp=await fetch('/api/manage?type=icps');
+    if(!resp.ok) return;
+    const profiles=await resp.json();
+    const section=document.getElementById('profiles-section');
+    const grid=document.getElementById('profiles-grid');
+    const count=document.getElementById('profiles-count');
+    if(!profiles.length){section.classList.add('hidden');return;}
+    section.classList.remove('hidden');
+    count.textContent=profiles.length+' profile'+(profiles.length!==1?'s':'');
+    grid.innerHTML=profiles.map(p=>{
+      return '<div class="item-card" onclick="applyProfile(\''+p.name.replace(/'/g,"\\'")+'\')"><div class="item-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5a3 3 0 100 6 3 3 0 000-6zM3.5 8a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zm.247 6.253a6.493 6.493 0 018.506 0 .75.75 0 11-1.06 1.06 5 5 0 00-6.386 0 .75.75 0 11-1.06-1.06z"/></svg></div><div class="item-info"><div class="item-title">'+esc(p.label||'ICP Profile')+'</div></div><button class="item-del" onclick="event.stopPropagation();deleteProfile(\''+p.name.replace(/'/g,"\\'")+'\')" title="Delete"><svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M6.5 1.75a.25.25 0 01.25-.25h2.5a.25.25 0 01.25.25V3h-3V1.75zm4.5 0V3h2.25a.75.75 0 010 1.5h-.75l-.478 9.421A1.75 1.75 0 0110.177 15H5.823a1.75 1.75 0 01-1.572-1.079L3.773 4.5H3a.75.75 0 010-1.5H5.25V1.75A1.75 1.75 0 017 0h2a1.75 1.75 0 011.75 1.75zM5.75 7a.75.75 0 01.75.75v4a.75.75 0 01-1.5 0v-4A.75.75 0 015.75 7zm4.5 0a.75.75 0 01.75.75v4a.75.75 0 01-1.5 0v-4A.75.75 0 0110.25 7z"/></svg></button></div>';
+    }).join('');
+  }catch(_){}
+}
+async function saveIcpProfile(p){
+  try{
+    await fetch('/api/manage?type=icp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});
+    if(window.opener) window.opener.loadProfiles();
+    loadProfiles();
+  }catch(_){}
+}
+async function deleteProfile(name){
+  if(!confirm('Delete this ICP profile?')) return;
+  try{
+    await fetch('/api/manage?type=icp&name='+encodeURIComponent(name),{method:'DELETE'});
+    loadProfiles();
+  }catch(_){}
+}
+async function applyProfile(name){
+  try{
+    const resp=await fetch('/api/manage?type=icp&name='+encodeURIComponent(name));
+    if(!resp.ok) return;
+    const p=await resp.json();
+    document.getElementById('company').value=p.company||'';
+    document.getElementById('industry').value=p.industry||'';
+    document.getElementById('domain').value=p.domain||'';
+    document.getElementById('role').value=p.role||'';
+    document.getElementById('seniority').value=p.seniority||'';
+    document.getElementById('signals').value=(p.signals||[]).join('\n');
+    const pp=document.getElementById('painPoint');
+    const savedPain=p.painPoint||'';
+    const options=Array.from(pp.options).map(o=>o.value);
+    pp.value=options.includes(savedPain)?savedPain:'';
+    onIndustryChange();
+    closeFormModal();
+  }catch(_){}
+}
+loadBriefs();
+loadProfiles();
+async function generateBrief(){
+  const btn=document.getElementById('generateBtn');
+  const err=document.getElementById('error');
+  const msg=document.querySelector('.form-actions span');
+  err.style.display='none';
+  closeFormModal();
+  const industry=document.getElementById('industry').value;
+  if(!industry){err.textContent='Select an industry';err.style.display='block';return;}
+  const win=window.open('','_blank');
+  if(!win){err.textContent='Please allow popups for this site';err.style.display='block';return;}
+  btn.classList.add('loading');btn.disabled=true;
+  msg.textContent='Generating... opens in new tab when ready';
+  const company=document.getElementById('company').value||'Account';
+  win.document.write('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Generating brief</title><style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif;background:#ffffff;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:20px}.lc{max-width:320px;width:100%;text-align:center}.sp{width:20px;height:20px;border:2px solid #d1d9e0;border-top-color:#0969da;border-radius:50%;animation:s .7s linear infinite;margin:0 auto 16px}@keyframes s{to{transform:rotate(360deg)}}h2{font-size:16px;font-weight:600;margin:0 0 4px;color:#1f2328}.sub{font-size:13px;color:#59636e;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #d1d9e0b3}.eta{font-size:12px;color:#59636e}</style></head><body><div class="lc"><div class="sp"></div><h2>Generating your brief</h2><div class="sub">'+esc(company)+'</div><div class="eta">Running 7-layer analysis &middot; ~60 seconds</div></div></body></html>');
+  win.document.close();
+  try{
+    const body={
+      company:document.getElementById('company').value,
+      industry,
+      domain:document.getElementById('domain').value,
+      product:document.getElementById('product').value,
+      role:document.getElementById('role').value,
+      seniority:document.getElementById('seniority').value,
+      signals:document.getElementById('signals').value.split('\n').filter(Boolean),
+      painPoint:document.getElementById('painPoint').value,
+      salesPlay:document.getElementById('salesPlay').value
+    };
+    const resp=await fetch('/api/brief-html',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(!resp.ok){let m='Error ('+resp.status+')';try{const e=await resp.json();m=e.error||m}catch(_){}throw new Error(m);}
+    const data=await resp.json();
+    const html=renderReport(data);
+    win.document.write(html);
+    win.document.close();
+    saveBrief(data);
+  }catch(e){
+    win.document.write('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Error</title><style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif;background:#ffffff;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:20px}.ec{max-width:300px;width:100%;text-align:center}h2{font-size:15px;font-weight:600;margin:0 0 4px;color:#d1242f}p{font-size:13px;color:#59636e;margin:0;line-height:1.5}</style></head><body><div class="ec"><svg width="24" height="24" viewBox="0 0 16 16" fill="#d1242f" style="margin-bottom:12px"><path d="M4.47.22A.749.749 0 015 0h6a.75.75 0 01.53.22l4.25 4.25c.141.14.22.331.22.53v6a.75.75 0 01-.22.53l-4.25 4.25A.749.749 0 0111 16H5a.749.749 0 01-.53-.22L.22 11.53A.749.749 0 010 11V5a.749.749 0 01.22-.53L4.47.22zM7 4.75v3a.75.75 0 001.5 0v-3a.75.75 0 00-1.5 0zM8 11a1 1 0 100-2 1 1 0 000 2z"/></svg><h2>Error</h2><p>'+esc(e.message)+'</p></div></body></html>');
+    win.document.close();
+    err.textContent='Error: '+e.message;
+    err.style.display='block';
+  }finally{
+    btn.classList.remove('loading');btn.disabled=false;
+    msg.textContent='~60 seconds';
+  }
+}
+function openFormModal(){
+  document.getElementById('formModal').classList.add('active');
+  document.body.classList.add('modal-open');
+}
+function closeFormModal(){
+  document.getElementById('formModal').classList.remove('active');
+  document.body.classList.remove('modal-open');
+}
+document.addEventListener('DOMContentLoaded',function(){
+  document.getElementById('formModal').addEventListener('click',function(e){if(e.target===this)closeFormModal()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeFormModal()});
+});
+</script>
+</body>
+</html>

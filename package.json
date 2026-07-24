@@ -1,0 +1,17 @@
+{
+  "name": "account-intel",
+  "version": "1.0.0",
+  "description": "7-Layer Pre-Meeting Brief Generator",
+  "scripts": {
+    "dev": "echo \"No dev server needed — deploy to Vercel\""
+  },
+  "dependencies": {
+    "technology-detector": "^1.0.4"
+  },
+  "engines": {
+    "node": "24.x"
+  },
+  "keywords": ["account-intelligence", "sales-brief", "b2b"],
+  "author": "lupara1990",
+  "license": "MIT"
+}

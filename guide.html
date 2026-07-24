@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>How to Use — Account Intel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --surface:#FFF; --surface-sunken:#f7f8fa;
+  --text:#0a0a0a; --text-secondary:#45515e; --text-muted:#5f5f5f;
+  --hairline:#e5e7eb; --border-bold:#d1d5db;
+  --accent:#1456f0; --accent-bg:#bfdbfe;
+  --space-1:8px; --space-2:16px; --space-3:24px; --space-4:32px; --space-5:40px; --space-6:48px; --space-7:56px; --space-8:64px;
+  --font-xs:12px; --font-sm:13px; --font-base:15px; --font-md:17px; --font-lg:21px; --font-xl:26px;
+  --radius-sm:6px; --radius-md:8px; --radius-lg:12px; --radius-xl:16px; --radius-full:9999px;
+  --shadow-xs:rgba(0,0,0,.04) 0 1px 2px 0; --shadow-sm:rgba(0,0,0,.08) 0 4px 6px 0;
+  --transition:150ms ease;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--surface-sunken);color:var(--text);font-size:var(--font-base);line-height:1.7;-webkit-font-smoothing:antialiased}
+.page{max-width:1000px;margin:0 auto;padding:var(--space-7) var(--space-6);min-height:100vh}
+.back{display:inline-flex;align-items:center;gap:8px;font-size:var(--font-sm);color:var(--text-secondary);text-decoration:none;margin-bottom:var(--space-5);font-weight:500;transition:color var(--transition)}
+.back:hover{color:var(--accent)}
+h1{font-size:var(--font-xl);font-weight:700;letter-spacing:-.02em;margin-bottom:var(--space-5)}
+.guide-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)}
+.guide-card{background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius-xl);padding:var(--space-5);transition:all var(--transition)}
+.guide-card:hover{border-color:var(--border-bold);box-shadow:var(--shadow-sm)}
+.guide-card h2{font-size:var(--font-xs);font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:var(--space-4);display:flex;align-items:center;gap:var(--space-2)}
+.guide-card h2::before{content:"";width:6px;height:6px;background:var(--accent);border-radius:2px;flex-shrink:0}
+.guide-card ol,.guide-card ul{padding-left:var(--space-5);font-size:var(--font-sm);color:var(--text);line-height:1.8}
+.guide-card li{margin-bottom:var(--space-1)}
+.guide-card .glossary{list-style:none;padding:0}
+.guide-card .glossary li{padding:var(--space-3) 0;border-bottom:1px solid var(--hairline);display:flex;gap:var(--space-3);align-items:flex-start}
+.guide-card .glossary li:last-child{border-bottom:none}
+.guide-card .glossary .gl-num{
+  width:28px;height:28px;border-radius:var(--radius-sm);background:var(--accent-bg);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;font-size:var(--font-sm);font-weight:700;flex-shrink:0;margin-top:1px
+}
+.guide-card .glossary .gl-text{font-size:var(--font-sm);color:var(--text);line-height:1.6}
+.guide-card .glossary .gl-text b{color:var(--text);font-weight:600}
+.guide-grid{margin-bottom:var(--space-4)}
+.guide-card.overview,.guide-card.pipeline,.guide-card.endpoints,.guide-card.config{width:100%;margin-bottom:var(--space-4)}
+.guide-card.overview p{font-size:var(--font-base);color:var(--text);margin:0}
+.wave-grid{display:grid;grid-template-columns:1fr;gap:var(--space-3);margin-top:var(--space-3)}
+.wave{display:grid;grid-template-columns:60px 1fr;gap:var(--space-2) var(--space-3);padding:var(--space-2) var(--space-3);border-left:3px solid var(--hairline);border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+.wave1{border-left-color:#4a9eed}
+.wave2{border-left-color:#ef4444}
+.wave3{border-left-color:#f59e0b}
+.wave.final{border-left-color:#22c55e;background:var(--surface-sunken)}
+.wave-label{font-size:var(--font-xs);font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);padding-top:2px;line-height:1.4}
+.wave-body{display:grid;grid-template-columns:1fr;gap:var(--space-1)}
+.wave-layers{font-size:var(--font-sm);font-weight:600;color:var(--text)}
+.wave-desc{font-size:var(--font-sm);color:var(--text-secondary);line-height:1.6}
+.wave-desc code,.endpoint-table code{font-size:var(--font-xs);background:var(--surface-sunken);padding:1px 6px;border-radius:var(--radius-sm)}
+.wave-ctx{font-size:var(--font-xs);color:var(--text-muted);padding:var(--space-1) var(--space-2);background:var(--surface-sunken);border-radius:var(--radius-sm);line-height:1.5}
+.wave-ctx b{color:var(--text-secondary);font-weight:600}
+.endpoint-table{width:100%;border-collapse:collapse;font-size:var(--font-sm)}
+.endpoint-table tr{border-bottom:1px solid var(--hairline)}
+.endpoint-table tr:last-child{border-bottom:none}
+.endpoint-table td{padding:var(--space-2) var(--space-2);vertical-align:top;line-height:1.5}
+.ep-method{font-weight:700;color:var(--accent);white-space:nowrap;width:50px}
+.ep-path{white-space:nowrap;width:160px;font-size:var(--font-xs)}
+.ep-path code{font-size:var(--font-xs)}
+.ep-desc{color:var(--text-secondary);font-size:var(--font-sm)}
+.ep-key{font-weight:600;white-space:nowrap;width:70px;color:var(--text);font-size:var(--font-sm)}
+.guide-card.config p,.guide-card.endpoints p{margin:0}
+footer{padding:var(--space-6) 0 0;text-align:center;font-size:var(--font-xs);color:var(--text-muted);margin-top:var(--space-6);border-top:1px solid var(--hairline)}
+@media(max-width:640px){
+  .page{padding:var(--space-5) var(--space-4)}
+  .guide-grid{grid-template-columns:1fr}
+  h1{font-size:var(--font-lg)}
+}
+</style>
+</head>
+<body>
+<div class="page">
+    <a href="index.html" class="back">&larr; Back to Account Intel</a>
+    <h1>How to Use — Account Intel</h1>
+
+    <div class="guide-card overview">
+      <h2>What This Is</h2>
+      <p>Account Intel generates a <b>7-layer pre-meeting brief</b> for any B2B target account. It combines a local LLM (<b>gemma3:4b</b> via hosted Ollama), live industry news (<b>GNews API</b>), and automated tech-stack detection (<b>technology-detector</b> npm package) to produce a complete intelligence report in about 60 seconds. The report is rendered as an HTML dashboard with full-width rows, layered insight sections, and an animated loading sequence.</p>
+    </div>
+
+    <div class="guide-grid">
+      <div class="guide-card">
+        <h2>Step-by-step</h2>
+        <ul class="glossary">
+          <li><span class="gl-num">1</span><span class="gl-text">Pick an <b>Industry</b> — signals and pain points auto-fill from presets</span></li>
+          <li><span class="gl-num">2</span><span class="gl-text">Type the <b>Company</b> name and <b>Domain</b> (needed for tech detection)</span></li>
+          <li><span class="gl-num">3</span><span class="gl-text">Enter your <b>Product</b> — what you sell (optional, not pre-filled)</span></li>
+          <li><span class="gl-num">4</span><span class="gl-text">Set <b>Role</b> and <b>Seniority</b> of the prospect</span></li>
+          <li><span class="gl-num">5</span><span class="gl-text">Tweak the auto-populated signals if you know more about the account</span></li>
+          <li><span class="gl-num">6</span><span class="gl-text">Click <b>Generate Brief</b> — takes about 60 seconds</span></li>
+          <li><span class="gl-num">7</span><span class="gl-text">Report opens in a new tab; auto-saves to <b>Saved Briefs</b> (stored as JSON files in the GitHub repo)</span></li>
+          <li><span class="gl-num">8</span><span class="gl-text">Inside the report, click <b>Save as ICP Profile</b> to store the form state</span></li>
+          <li><span class="gl-num">9</span><span class="gl-text">Apply a saved ICP profile later to pre-fill the form for similar accounts</span></li>
+        </ul>
+      </div>
+      <div class="guide-card">
+        <h2>Report Sections (7 Layers)</h2>
+        <ul class="glossary">
+          <li><span class="gl-num">1</span><span class="gl-text"><b>Why this account</b> — Buying signals, pressure events, validation questions, and confidence score. Tells you why they're likely to buy now.</span></li>
+          <li><span class="gl-num">2</span><span class="gl-text"><b>Industry context</b> — Live headlines from GNews, curated talk tracks, and vertical shift recommendations.</span></li>
+          <li><span class="gl-num">3</span><span class="gl-text"><b>Who you're meeting</b> — Their priorities, concerns, influence level, and a tailored success vision.</span></li>
+          <li><span class="gl-num">4</span><span class="gl-text"><b>Tech stack</b> — Detected via <code>technology-detector</code> scanning the domain. Falls back to industry signals if no domain is given.</span></li>
+          <li><span class="gl-num">5</span><span class="gl-text"><b>How to position</b> — Reframe against competitors, leverage points, and phrases to avoid.</span></li>
+          <li><span class="gl-num">6</span><span class="gl-text"><b>Conversation path</b> — Best lead path, fallback angle, trigger moment, value sequence, and call flow steps.</span></li>
+          <li><span class="gl-num">7</span><span class="gl-text"><b>Discovery guide</b> — Validation questions, cues to listen for, pivot topics, and success criteria.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="guide-card pipeline">
+      <h2>Architecture — Execution Order &amp; Context Flow</h2>
+      <p>Layers execute in 3 parallel waves then a final step. Upstream layers pass relevant context downstream so each layer builds on the last.</p>
+      <div class="wave-grid">
+        <div class="wave wave1">
+          <span class="wave-label">Wave 1</span>
+          <div class="wave-body">
+            <div class="wave-layers">L1 — Signals &middot; L2 — Industry (GNews) &middot; L4 — Tech Stack</div>
+            <div class="wave-desc">Run in parallel. L1 produces summary, pressure events, inferred signals. L2 fetches live news via GNews with 1hr per-industry cache. L4 runs <code>technology-detector</code> against the domain (or falls back to industry-preset signals with &ge;3 matches = medium confidence).</div>
+            <div class="wave-ctx"><b>Passes downstream:</b> L1 outputs &rarr; L3, L5, L6. L4 outputs &rarr; L5, L6.</div>
+          </div>
+        </div>
+        <div class="wave wave2">
+          <span class="wave-label">Wave 2</span>
+          <div class="wave-body">
+            <div class="wave-layers">L3 — Prospect &middot; L5 — Compete</div>
+            <div class="wave-desc">Run after Wave 1 completes. L3 receives L1's summary and pressure context to assess concerns, priorities, and influence level (based on role/seniority, not default "decision-maker"). L5 receives both L1 and L4 context for competitive reframing and leverage identification.</div>
+            <div class="wave-ctx"><b>Passes downstream:</b> L3 outputs &rarr; L6. L5 outputs &rarr; L7.</div>
+          </div>
+        </div>
+        <div class="wave wave3">
+          <span class="wave-label">Wave 3</span>
+          <div class="wave-body">
+            <div class="wave-layers">L6 — Orchestrate</div>
+            <div class="wave-desc">Runs after Wave 2. Receives L1 + L3 + L4 context to build the conversation path with best lead path, backup fallback, trigger plan, value proposition sequence, and call flow steps.</div>
+            <div class="wave-ctx"><b>Passes downstream:</b> All L6 outputs &rarr; L7.</div>
+          </div>
+        </div>
+        <div class="wave final">
+          <span class="wave-label">Final</span>
+          <div class="wave-body">
+            <div class="wave-layers">L7 — Discovery</div>
+            <div class="wave-desc">Receives the concatenated outputs of all 6 upstream layers. Uses an 8k token budget (vs 3k for other layers). Generates validation questions, cues to listen for, pivot topics if they push back, phrases to avoid, and success criteria.</div>
+            <div class="wave-ctx"><b>Input:</b> All 6 layer outputs concatenated.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="guide-card endpoints">
+      <h2>API Endpoints</h2>
+      <table class="endpoint-table">
+        <tr><td class="ep-method">POST</td><td class="ep-path"><code>/api/brief-html</code></td><td class="ep-desc">Main endpoint. Orchestrates all 7 layers and returns an HTML dashboard report. Accepts <code>company</code>, <code>domain</code>, <code>industry</code>, <code>product</code>, <code>role</code>, <code>seniority</code>, <code>signals</code>, <code>painPoint</code> (dropdown: lead generation, pipeline velocity, competitive displacement, differentiation, security compliance, cost reduction, digital transformation, data integration, scalability, vendor consolidation, roi justification, change management, or custom). Serverless maxDuration: 120s.</td></tr>
+      </table>
+    </div>
+
+    <div class="guide-card config">
+      <h2>Configuration &amp; Dependencies</h2>
+      <table class="endpoint-table">
+        <tr><td class="ep-key">LLM</td><td class="ep-desc"><code>gemma3:4b</code> via <code>ollama.com/api/chat</code>. API key set via <code>OLLAMA_API_KEY</code> env var. Default token budget: 3,000 (L7 uses 8,000).</td></tr>
+        <tr><td class="ep-key">News</td><td class="ep-desc">GNews free tier (100 req/day). API key set via <code>GNEWS_API_KEY</code>. Results cached per industry for 1 hour in-memory.</td></tr>
+        <tr><td class="ep-key">Tech</td><td class="ep-desc"><code>technology-detector ^1.0.4</code> npm package. Scans the target domain for HTTP headers and technology fingerprints.</td></tr>
+        <tr><td class="ep-key">Node</td><td class="ep-desc">v24.x (Vercel runtime). Engine pinned in <code>package.json</code>.</td></tr>
+        <tr><td class="ep-key">Font</td><td class="ep-desc">DM Sans via Google Fonts.</td></tr>
+      </table>
+    </div>
+
+    <div class="guide-card">
+      <h2>Useful Details</h2>
+      <ul>
+        <li><b>Product field is never pre-filled</b> — you must enter it each time to ensure the brief is relevant to what you're selling.</li>
+        <li><b>ICP Profiles</b> are stored as JSON files in the <code>icps/</code> folder of the GitHub repo. They save the form state (industry, signals, pain point, role, seniority) so you can apply them instantly for similar accounts.</li>
+        <li><b>Saved Briefs</b> are stored as JSON files in the <code>briefs/</code> folder of the GitHub repo. Each brief stores the full report data so you can reopen or review past reports.</li>
+        <li><b>Tech detection fallback:</b> If no domain is provided, Layer 4 matches against <code>INCUMBENTS_SIGNALS</code> in <code>_config.js</code> (8 industries mapped to likely tech signals). Requires &ge;3 matches for medium confidence, &ge;2 for low, otherwise "Unknown / None".</li>
+        <li><b>Influence level</b> in Layer 3 is based on the prospect role and seniority fields — there is no default "decision-maker" label.</li>
+        <li><b>Cross-layer context</b> is concatenated into the LLM prompt for downstream layers. L1 (summary + pressure + inferred signals) feeds L3, L5, L6. L4 (detected tech + evidence) feeds L5, L6. All layers concatenated feed L7.</li>
+        <li><b>V1 fallback</b> — The <code>/v1/</code> route serves the previous stable build. Accessible at <code>account-intel-kappa.vercel.app/v1/</code>.</li>
+        <li><b>Product is intentionally NOT pre-filled</b> when selecting an industry — this is by design to prevent stale product entries.</li>
+      </ul>
+    </div>
+<footer>account-intel</footer>
+</div>
+</body>
+</html>

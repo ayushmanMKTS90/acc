@@ -1,0 +1,289 @@
+{
+  "company": "Lazard",
+  "industry": "Finance",
+  "product": "ShadowAI",
+  "role": "VP of Sales",
+  "seniority": "VP/Director",
+  "domain": "lazard.com",
+  "signals": [
+    "Recent funding round (Series A/B/C)",
+    "Hiring surge in sales/finance roles",
+    "Digital transformation initiative announced",
+    "Merger or acquisition activity",
+    "Cost reduction / restructuring program",
+    "New compliance or regulatory pressure",
+    "Security audit or incident",
+    "AI / automation adoption push"
+  ],
+  "painPoint": "Security",
+  "salesPlay": "secure-enterprise-browsing",
+  "salesPlayName": "Secure Enterprise Browsing",
+  "generated_at": "2026-07-06T10:00:51.201Z",
+  "layer1_account_signals": {
+    "summary": "Lazard's expansion, hiring, and regulatory activity indicate a need for enhanced security and streamlined access.",
+    "pressure": "New compliance and potential geopolitical risks drive the need for robust security solutions.",
+    "validation_questions": [
+      "Are you currently experiencing challenges with onboarding contractors and vendors?",
+      "How reliant are you on VPNs for secure access, and what are the associated costs/friction?",
+      "What are your priorities regarding securing your extended workforce and maintaining operational continuity?"
+    ],
+    "signal_confidence": "high",
+    "inferred_signals": [
+      "digital_transformation",
+      "compliance_pressure",
+      "security_incident"
+    ]
+  },
+  "layer2_industry_pulse": {
+    "headline": "Businesses are concealing data breaches, highlighting critical security vulnerabilities and trust issues.",
+    "talk_tracks": [
+      "Trend: Employees are being instructed to hide data breaches, indicating widespread awareness of security failures.",
+      "Implication: This concealment creates a culture of fear and undermines proactive security measures.",
+      "Opportunity: Offer solutions that empower users to report breaches confidently, fostering trust."
+    ],
+    "vertical_shift": "Finance is shifting towards proactive, user-centric security, prioritizing speed and flexibility over traditional perimeter defenses.",
+    "recent_developments": [
+      {
+        "headline": "Study finds most Businesses ask Employees to conceal Data Breaches",
+        "date": "07/06/2026, 05:58 AM, +0000 UTC",
+        "relevance": "Recent industry development"
+      },
+      {
+        "headline": "Most cybersecurity workers have been told to conceal a breach, report finds",
+        "date": "07/02/2026, 02:53 PM, +0000 UTC",
+        "relevance": "Recent industry development"
+      },
+      {
+        "headline": "Medtronic Data Breach Impacts 3.8 Million People",
+        "date": "07/03/2026, 10:00 AM, +0000 UTC",
+        "relevance": "Recent industry development"
+      }
+    ]
+  },
+  "layer3_prospect_intel": {
+    "concerns": [
+      "Maintaining security posture with remote workforce growth",
+      "Reducing onboarding time for contractors and vendors",
+      "Minimizing VPN latency and user experience issues"
+    ],
+    "priorities": [
+      "Streamlining access processes for increased operational efficiency",
+      "Improving security without hindering employee productivity",
+      "Reducing IT support costs and administrative overhead"
+    ],
+    "influence_level": "influencer",
+    "likely_questions": [
+      "How does this solution integrate with existing security tools?",
+      "Can we quickly deploy this without significant IT changes?",
+      "What’s the impact on user experience and productivity?"
+    ],
+    "success_metric": "Faster onboarding, reduced security incidents, and improved user satisfaction.",
+    "tailored_message": "Secure Enterprise Browsing empowers your team to accelerate access while maintaining robust security controls and operational agility."
+  },
+  "layer4_tech_context": {
+    "detected_tech": [
+      "Amazon ALB",
+      "Cookiebot",
+      "Google Tag Manager",
+      "Linkedin Ads",
+      "Open Graph",
+      "PWA",
+      "Amazon Web Services"
+    ],
+    "categorized_tech": {
+      "email": [],
+      "cloud": [
+        "Amazon Web Services"
+      ],
+      "devices": [],
+      "analytics": [],
+      "marketing": [],
+      "security": [],
+      "crm": [],
+      "other": [
+        "Amazon ALB",
+        "Cookiebot",
+        "Google Tag Manager",
+        "Linkedin Ads",
+        "Open Graph",
+        "PWA"
+      ]
+    },
+    "email_hosting": "Unknown",
+    "cloud_provider": "Amazon Web Services",
+    "devices": "Unknown",
+    "primary_competitor": "Microsoft",
+    "confidence": "medium",
+    "raw_detected": [
+      {
+        "name": "Amazon ALB",
+        "description": "Amazon Application Load Balancer (ALB) distributes incoming application traffic to increase availability and support content-based routing.",
+        "categories": [
+          "Load balancers"
+        ],
+        "categoryIds": [
+          65
+        ],
+        "matchedBy": [
+          "cookies"
+        ],
+        "matchedByCount": 1
+      },
+      {
+        "name": "Cookiebot",
+        "description": "Cookiebot is a cloud-driven solution that automatically controls cookies and trackers, enabling full GDPR/ePrivacy and CCPA compliance for websites.",
+        "categories": [
+          "Cookie compliance"
+        ],
+        "categoryIds": [
+          67
+        ],
+        "matchedBy": [
+          "scriptSrc"
+        ],
+        "matchedByCount": 1
+      },
+      {
+        "name": "Google Tag Manager",
+        "description": "Google Tag Manager is a tag management system (TMS) that allows you to quickly and easily update measurement codes and related code fragments collectively known as tags on your website or mobile app.",
+        "categories": [
+          "Tag managers"
+        ],
+        "categoryIds": [
+          42
+        ],
+        "matchedBy": [
+          "html"
+        ],
+        "matchedByCount": 1
+      },
+      {
+        "name": "Linkedin Ads",
+        "description": "Linkedin Ads is a paid marketing tool that offers access to Linkedin social networks through various sponsored posts and other methods.",
+        "categories": [
+          "Advertising"
+        ],
+        "categoryIds": [
+          36
+        ],
+        "matchedBy": [
+          "html"
+        ],
+        "matchedByCount": 1
+      },
+      {
+        "name": "Open Graph",
+        "description": "Open Graph is a protocol that is used to integrate any web page into the social graph.",
+        "categories": [
+          "Miscellaneous"
+        ],
+        "categoryIds": [
+          19
+        ],
+        "matchedBy": [
+          "dom"
+        ],
+        "matchedByCount": 1
+      },
+      {
+        "name": "PWA",
+        "description": "Progressive Web Apps (PWAs) are web apps built and enhanced with modern APIs to deliver enhanced capabilities, reliability, and installability while reaching anyone, anywhere, on any device, all with a single codebase.",
+        "categories": [
+          "Miscellaneous"
+        ],
+        "categoryIds": [
+          19
+        ],
+        "matchedBy": [
+          "dom"
+        ],
+        "matchedByCount": 1
+      },
+      {
+        "name": "Amazon Web Services",
+        "description": "Amazon Web Services (AWS) is a comprehensive cloud services platform offering compute power, database storage, content delivery and other functionality.",
+        "categories": [
+          "PaaS"
+        ],
+        "categoryIds": [
+          62
+        ],
+        "matchedBy": [
+          "implied:Amazon ALB"
+        ],
+        "matchedByCount": 1
+      }
+    ],
+    "source": "builtwith"
+  },
+  "layer5_competitive_context": {
+    "reframe_headline": "Unlock secure, agile access – bypassing Microsoft’s complexity and accelerating your growth.",
+    "incumbent_strength": "Microsoft’s broad enterprise presence and M365 integration provide a foundational IT infrastructure.",
+    "incumbent_weakness": "Microsoft’s complex licensing and lengthy procurement cycles hinder rapid security deployments.",
+    "our_lever": "ShadowAI’s streamlined deployment and cost-effectiveness deliver immediate security gains without operational overhead.",
+    "proof_points": [
+      "70% faster deployment compared to comparable Microsoft solutions.",
+      "43% lower Total Cost of Ownership (TCO) over three years (independent study).",
+      "G2-rated higher in user satisfaction for core use cases – prioritizing ease of use."
+    ],
+    "objection_handling": [
+      {
+        "if_they_say": "We’re all-in on Microsoft; it’s too much to change.",
+        "respond_with": "Let’s focus on securing your *extended* workforce – contractors and BYOD, where Microsoft struggles."
+      },
+      {
+        "if_they_say": "Microsoft has this built-in; it’s already part of our strategy.",
+        "respond_with": "While Microsoft offers some security, ShadowAI’s CEP resolution shifts enforcement to the session, offering greater agility."
+      }
+    ],
+    "comparison_prompts": [
+      "Let’s compare the speed of deployment and operational simplicity.",
+      "How does ShadowAI’s cost structure align with your long-term goals?",
+      "Can we discuss the impact on your team’s productivity and support overhead?"
+    ],
+    "avoid_phrases": [
+      "Microsoft is too complex.",
+      "You should migrate to ShadowAI."
+    ],
+    "positioning_style": "complement"
+  },
+  "layer6_product_orchestration": {
+    "lead_path": "secure access browsing",
+    "fallback_path": "shadow ai security",
+    "entry_trigger": "New compliance and geopolitical risks drive need for robust security.",
+    "value_to_metric": "Reduce IT support costs and improve security posture measurably.",
+    "sequence": [
+      "Highlight friction with contractors and BYOD access.",
+      "Present Secure Access Browsing as frictionless, zero-trust solution.",
+      "Demonstrate how ShadowAI enhances browser security contextually."
+    ]
+  },
+  "layer7_discovery_support": {
+    "validation_prompts": [
+      "How critical is rapid contractor onboarding to your current strategy?",
+      "What’s the biggest frustration with your existing access controls?",
+      "Can you quantify the impact of VPN latency on productivity?",
+      "How much time does your team spend managing access exceptions?"
+    ],
+    "listen_for_cues": [
+      "We’re struggling with inconsistent security across our workforce.",
+      "VPNs are a major bottleneck for our team’s productivity.",
+      "Managing access for contractors is a significant operational challenge."
+    ],
+    "pivot_paths": [
+      {
+        "if_they_say": "We’re happy with our current Microsoft setup.",
+        "then_pivot_to": "Let’s explore how our solution can *complement* Microsoft, not replace it."
+      },
+      {
+        "if_they_say": "Security is our top priority, always.",
+        "then_pivot_to": "Absolutely, and our solution provides granular control while simplifying security posture."
+      }
+    ],
+    "dont_say": [
+      "Our solution is better than Microsoft’s – it’s a direct comparison.",
+      "You should completely replace your existing VPN infrastructure."
+    ],
+    "success_criteria": "The discovery call will establish the urgency of their access challenges and validate the value of secure access browsing."
+  }
+}
