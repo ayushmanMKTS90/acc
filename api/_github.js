@@ -1,5 +1,5 @@
 const TOKEN = process.env.GITHUB_TOKEN;
-const REPO = 'ayushmanMKTS90/account-intel-layers';
+const REPO = process.env.GITHUB_REPO || 'ayushmanMKTS90/account-intel-layers';
 const BRANCH = 'main';
 const BASE = 'https://api.github.com/repos/' + REPO;
 
