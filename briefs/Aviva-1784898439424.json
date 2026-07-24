@@ -1,0 +1,140 @@
+{
+  "company": "Aviva",
+  "industry": "Finance",
+  "product": "ChromeOS",
+  "role": "CTO",
+  "seniority": "C-Level",
+  "domain": "aviva.ae",
+  "signals": [
+    "Recent funding round (Series A/B/C)",
+    "Hiring surge in sales/finance roles",
+    "Digital transformation initiative announced",
+    "Merger or acquisition activity",
+    "Cost reduction / restructuring program",
+    "New compliance or regulatory pressure",
+    "Security audit or incident",
+    "AI / automation adoption push"
+  ],
+  "painPoint": "Security",
+  "salesPlay": "ai-native-defense",
+  "salesPlayName": "AI-Native Defense",
+  "generated_at": "2026-07-24T13:07:19.424Z",
+  "layer1_account_signals": {
+    "summary": "Aviva is undergoing digital transformation and AI adoption amid regulatory scrutiny and security concerns, making it ripe for proactive defense solutions.",
+    "pressure": "Regulatory scrutiny and recent security incidents demand proactive threat prevention.",
+    "validation_questions": [
+      "What specific security incidents or audit findings have highlighted gaps in your current detection-focused tools?",
+      "How is your organization currently integrating AI into security workflows, and what challenges are you facing?",
+      "What impact would a proactive, browser-centric defense layer have on your incident response costs and business continuity?"
+    ],
+    "signal_confidence": "high",
+    "inferred_signals": [
+      "expansion",
+      "restructuring",
+      "security_incident"
+    ]
+  },
+  "layer2_industry_pulse": {
+    "headline": "Finance security must shift from reactive alerts to AI-driven proactive prevention.",
+    "talk_tracks": [
+      "AI attacks outpace defenses → teams react post-breach → embed AI in OS/browser to block threats.",
+      "Gen"
+    ],
+    "recent_developments": []
+  },
+  "layer3_prospect_intel": {
+    "concerns": [
+      "Preventing sophisticated AI-driven"
+    ]
+  },
+  "layer4_tech_context": {
+    "detected_tech": [],
+    "categorized_tech": {
+      "email": [],
+      "cloud": [],
+      "devices": [],
+      "analytics": [],
+      "marketing": [],
+      "security": [],
+      "crm": [],
+      "other": []
+    },
+    "email_hosting": "Unknown",
+    "cloud_provider": "Unknown",
+    "devices": "Unknown",
+    "primary_competitor": "Microsoft",
+    "confidence": "medium",
+    "raw_detected": [],
+    "source": "builtwith"
+  },
+  "layer5_competitive_context": {
+    "reframe_headline": "Shift from reactive Microsoft tools to proactive AI defense that stops breaches before they start.",
+    "incumbent_strength": "Microsoft's deep M365 integration offers seamless productivity across enterprise.",
+    "incumbent_weakness": "Complex licensing and legacy architecture slow deployment and increase risk.",
+    "our_lever": "ChromeOS embeds AI threat prevention directly into the OS, stopping attacks instantly.",
+    "proof_points": [
+      "70% faster deployment versus Microsoft solutions.",
+      "43% lower TCO over three years in independent studies.",
+      "Higher G2 user satisfaction for core use cases."
+    ],
+    "objection_handling": [
+      {
+        "if_they_say": "We're all-in on Microsoft.",
+        "respond_with": "ChromeOS enhances Microsoft tools with instant AI prevention, protecting your existing ecosystem."
+      },
+      {
+        "if_they_say": "Microsoft has built-in security.",
+        "respond_with": "ChromeOS adds proactive AI layer that stops threats before they reach Microsoft services."
+      }
+    ],
+    "comparison_prompts": [
+      "How does Microsoft handle zero‑day AI attacks?",
+      "What is the cost of delayed breach detection?",
+      "Can your solution prevent data exfiltration in real time?"
+    ],
+    "avoid_phrases": [
+      "Microsoft is the only secure platform.",
+      "Switching to ChromeOS will break your workflow."
+    ],
+    "positioning_style": "complement"
+  },
+  "layer6_product_orchestration": {
+    "lead_path": "dlp_security",
+    "fallback_path": "browser_governance",
+    "entry_trigger": "Security incidents and regulatory scrutiny highlight need for proactive data protection",
+    "value_to_metric": "Reduce data exfiltration incidents by 70% and cut response costs by 50%",
+    "sequence": [
+      "Highlight AI-driven prevention capabilities in ChromeOS",
+      "Show real-time risk evaluation during user sessions",
+      "Quantify impact on incident response time and compliance metrics"
+    ]
+  },
+  "layer7_discovery_support": {
+    "validation_prompts": [
+      "Is regulatory scrutiny the biggest driver for your security upgrades?",
+      "Do you feel current tools are reactive rather than preventive?",
+      "How critical is preventing AI-driven data exfiltration to your risk strategy?",
+      "Would real-time prevention reduce your incident response costs?"
+    ],
+    "listen_for_cues": [
+      "Mentions cost of incident response",
+      "Talks about AI-driven attacks",
+      "Expresses frustration with alert fatigue"
+    ],
+    "pivot_paths": [
+      {
+        "if_they_say": "We already use Microsoft security tools.",
+        "then_pivot_to": "How would you feel if those tools prevented breaches before alerts?"
+      },
+      {
+        "if_they_say": "We don't have budget for new solutions.",
+        "then_pivot_to": "What if the ROI comes from reduced incident response costs?"
+      }
+    ],
+    "dont_say": [
+      "We are just another vendor.",
+      "Your current tools are fine."
+    ],
+    "success_criteria": "They agree to evaluate a pilot that demonstrates proactive prevention and ROI."
+  }
+}
